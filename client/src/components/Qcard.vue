@@ -14,7 +14,7 @@
         </div>
         <div class="d-flex justify-content-between px-3 w-100">
             <div class="mt-3">
-                <span v-for="(tag, i) in question.tags" :key="i" @click="changePage(`${tag._id}/tag`)" class="Q-tag">{{ tag.tag }}</span>
+                <span v-for="(tag, i) in question.tags" :key="i" @click="changePage(`/${tag._id}/tag`)" class="Q-tag">{{ tag.tag }}</span>
             </div>
             <div style="cursor: pointer;" class="Q-user mt-3 text-primary">{{ question.userId.email }}</div>
         </div>
