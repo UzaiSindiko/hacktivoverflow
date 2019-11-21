@@ -159,7 +159,7 @@ export default {
              let questionId = this.$route.params.id
              this.$store.dispatch('POST_ANS', { title, desc, questionId })
                 .then(() =>{
-                    let page = this.pages.length
+                    let page = this.pages.length || 1
                     this.$store.dispatch('GET_ANSWER_BY_Q', { id: questionId, page })
                     .then(()=>{
                         this.countPage()

@@ -1,7 +1,7 @@
 <template>
   <nav class="nav-container d-flex align-items-center justify-content-between">
     <i style="cursor: pointer;" class="fab fa-stack-overflow"></i>
-    <input class="search" type="search" name="" id="" placeholder="Search....">
+    <input v-model="q" class="search" type="search" name="" id="" placeholder="Search....">
     <div @click="changePage('/myaccount/myquestion')" class="d-flex align-items-center">
       <img v-if="isLogin" style="cursor: pointer;" class="profile-pic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTHYycoKHHxwYLX9EFrpx-xxmyGIH3A6HUgnKza8HlCo0F6Sw8r" alt="">
       <button v-if="isLogin" class="btn btn-dark">My Account</button>
@@ -15,6 +15,11 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'navbar',
+  data(){
+    return{
+      q: ''
+    }
+  },
   computed: {
     ...mapState(['isLogin'])
   },
@@ -24,6 +29,13 @@ export default {
     },
     logout(){
       this.$store.dispatch('LOGOUT')
+    }
+  },
+  watch:{
+    q(){
+      let q = this.q
+      this.$store.dispatch('SEARCH', q)
+      this.$router.push('/overflow')
     }
   }
 

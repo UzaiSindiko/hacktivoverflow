@@ -1,12 +1,8 @@
 <template>
  <div class="Q-card-container d-flex">
      <div @click="changePage(`/${question._id}/qna`)" class="info">
-        <span>0</span>
+        <span>{{ question.upvotes.length - question.downvotes.length }}</span>
         <span style="font-size: 10px;">Votes</span>
-     </div>
-     <div @click="changePage(`/${question._id}/qna`)" class="info">
-        <span>0</span>
-        <span style="font-size: 10px;">Answers</span>
      </div>
      <div @click="changePage(`/${question._id}/qna`)" class="info">
         <span>{{ question.views }}</span>
@@ -18,7 +14,7 @@
         </div>
         <div class="d-flex justify-content-between px-3 w-100">
             <div class="mt-3">
-                <span v-for="(tag, i) in question.tags" :key="i" class="Q-tag">{{ tag.tag }}</span>
+                <span v-for="(tag, i) in question.tags" :key="i" @click="changePage(`${tag._id}/tag`)" class="Q-tag">{{ tag.tag }}</span>
             </div>
             <div style="cursor: pointer;" class="Q-user mt-3 text-primary">{{ question.userId.email }}</div>
         </div>

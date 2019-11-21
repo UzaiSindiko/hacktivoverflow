@@ -4,6 +4,7 @@ const { authentication, authorizationQuestion } = require('../middleware/auth')
 
 router.post('/', authentication, QuestionController.create)
 router.get('/', QuestionController.find)
+router.get('/search', QuestionController.search)
 router.get('/top', QuestionController.findTop)
 router.get('/:id/tag', QuestionController.tag)
 router.get('/user', authentication, QuestionController.findByUser)

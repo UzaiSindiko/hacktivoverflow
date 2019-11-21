@@ -43,14 +43,14 @@ export default {
     unwatch(){
       this.isWatch = false 
       let id = this.$route.params.id
-      this.$store.dispatch('UNWATCH_TAG', id)
+      this.$store.dispatch('REMOVE_TAG', id)
     }
   },
   created(){
       let id = this.$route.params.id
       this.$store.dispatch('GET_ONE_TAG', id)
         .then(() =>{
-          this.oneTag.userId.forEach(el => {
+          this.oneTag.watcher.forEach(el => {
             if(el + '' == this.userId){
               this.isWatch = true
             } else {

@@ -40,7 +40,7 @@ class QuestionController {
     }
 
     static find(req, res, next){
-        Question.find().populate('userId', 'email').populate('tags', 'tag').sort({ updatedAt: -1 })
+        Question.find({}).populate('userId', 'email').populate('tags', 'tag').sort({ updatedAt: -1 })
         .then(questions => {
             res.status(200).json(questions)
         })
@@ -99,14 +99,8 @@ class QuestionController {
                         }
                     },
                     {
-                        description: {
+                        desc: {
                             $regex: `${q}`, $options: 'i'
-                        }
-                    },
-                    {
-                        tags: {
-                            $regex: `${keyword}`,
-                            $options: 'i'
                         }
                     }
                 ]

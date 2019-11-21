@@ -2,7 +2,7 @@
         <div @click="changePage(`${tag._id}/tag`)" class="tag-card text-left d-flex flex-column justify-content-between">
             <div class="d-flex align-items-center">
                 <span class="title">{{ tag.tag }}</span>
-                <span class="ml-2 text-secondary">x {{ tag.userId.length }}</span>
+                <span class="ml-2 text-secondary">x {{ tag.watcher.length }}</span>
             </div>
             <div class="desc">
                 <span>{{ tag.desc }}</span>

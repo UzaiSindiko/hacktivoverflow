@@ -18,6 +18,8 @@ export default new Vuex.Store({
     answerByQ: [],
     userId : '',
     oneAns: {},
+    watchTag: [],
+    ingnoreTag: []
     
   },
   mutations: {
@@ -58,13 +60,79 @@ export default new Vuex.Store({
     },
     get_one_tag(state, data){
       state.oneTag = data
+    },
+    get_watch_tag(state, data){
+      state.watchTag = data
+    },
+    get_ignore_tag(state, data){
+      state.ingnoreTag = data
     }
   },
   actions: {
-    UNWATCH_TAG(context, id){
-      axios({
+    REMOVE_TAG(context, id){
+      Swal.showLoading()
+      return axios({
         method: 'patch',
-        url: `/tags/${id}/unwatch`,
+        url: `/tags/${id}/neutral`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({data}) =>{
+        Swal.close()
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+    },
+    GET_IGNORE(context){
+      axios({
+        method: 'get',
+        url: `/tags/ignore`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({data}) =>{
+        context.commit('get_ignore_tag', data)
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+
+    },
+    GET_WATCH(context){
+      axios({
+        method: 'get',
+        url: `/tags/watch`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({data}) =>{
+        context.commit('get_watch_tag', data)
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+
+    },
+    IGNORE_TAG(context, id){
+     return axios({
+        method: 'patch',
+        url: `/tags/${id}/ignore`,
         headers: {
           token: localStorage.getItem('token')
         }
@@ -81,7 +149,7 @@ export default new Vuex.Store({
       })
     },
     WATCH_TAG(context, id){
-      axios({
+     return axios({
         method: 'patch',
         url: `/tags/${id}/watch`,
         headers: {
@@ -89,7 +157,7 @@ export default new Vuex.Store({
         }
       })
       .then(({data}) =>{
-        context.dispatch('GET_ONE_TAG', id)
+        
       })
       .catch(({ response }) => {
         Swal.fire({
@@ -358,7 +426,13 @@ export default new Vuex.Store({
         }
       })
       .then(() =>{
-        
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Success Add Answer',
+          showConfirmButton: false,
+          timer: 1500
+        })
       })
       .catch(({ response }) => {
         Swal.fire({
@@ -460,6 +534,22 @@ export default new Vuex.Store({
       axios({
         method: 'get',
         url: '/questions'
+      })
+      .then(({data}) =>{
+        context.commit('get_q', data)
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+    },
+    SEARCH(context, q){
+      axios({
+        method: 'get',
+        url: `/questions/search?q=${q}`
       })
       .then(({data}) =>{
         context.commit('get_q', data)

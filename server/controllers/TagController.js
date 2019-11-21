@@ -39,19 +39,56 @@ class TagController {
     static watch(req, res, next){
         let userId = req.decode.id
         let id = req.params.id
-        Tag.findByIdAndUpdate(id, { $push: { userId } }, { new:true  })
+        Tag.findByIdAndUpdate(id, { $pull: { ignorer: userId } })
+        .then(()=>{
+            return Tag.findByIdAndUpdate(id, { $push: { watcher: userId } }, { new:true  })
+        })
         .then(tag =>{
             res.status(200).json(tag)
         })
         .catch(next)
     }
 
-    static unwatch(req, res, next){
+    static ignore(req, res, next){
         let userId = req.decode.id
         let id = req.params.id
-        Tag.findByIdAndUpdate(id, { $pull: { userId } }, { new: true })
+        Tag.findByIdAndUpdate(id, { $pull: { watcher: userId } })
+        .then(()=>{
+            return Tag.findByIdAndUpdate(id, { $push: { ignorer: userId } }, { new:true  })
+        })
         .then(tag =>{
             res.status(200).json(tag)
+        })
+        .catch(next)
+    }
+
+    static netral(req, res, next){
+        let userId = req.decode.id
+        let id = req.params.id
+        Tag.findByIdAndUpdate(id, { $pull: { watcher: userId } })
+        .then(()=>{
+            return Tag.findByIdAndUpdate(id, { $pull: { ignorer: userId } }, { new:true  })
+        })
+        .then(tag =>{
+            res.status(200).json(tag)
+        })
+        .catch(next)
+    }
+
+    static getWatch(req, res, next){
+        let userId = req.decode.id
+        Tag.find({ watcher :userId})
+        .then(tags =>{
+            res.status(200).json(tags)
+        })
+        .catch(next)
+    }
+
+    static getIgnore(req, res, next){
+        let userId = req.decode.id
+        Tag.find({ ignorer :userId})
+        .then(tags =>{
+            res.status(200).json(tags)
         })
         .catch(next)
     }

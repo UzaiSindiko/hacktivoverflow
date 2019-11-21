@@ -3,7 +3,11 @@ const Schema = mongoose.Schema
 
 
 const tagSchema = new Schema({
-    userId: [{
+    watcher: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    }],
+    ignorer: [{
         type: Schema.Types.ObjectId,
         ref: "User",
     }],

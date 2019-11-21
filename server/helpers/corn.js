@@ -1,34 +1,71 @@
+const nodemailer = require('nodemailer')
+require('dotenv').config()
+const cron = require('node-cron');
 const User = require('../models/User')
-const MailConfig = require('../configs/sendEmail');
-const hbs = require('nodemailer-express-handlebars');
-const gmailTransport = MailConfig.GmailTransport;
+const Question = require('../models/Question')
+const mongoose = require('mongoose')
+const URI =  process.env.URI
 
-var CronJob = require('cron').CronJob;
-let cornjob = new CronJob(' 0 0 1 1 *', function () {
-    User.find()
-        .then(users => {
-            users.forEach(user => {
-                MailConfig.ViewOption(gmailTransport, hbs);
-                let HelperOptions = {
-                    from: '"Uzai Sindiko" <uzai.sindiko@gmail.com>',
-                    to: `${user.email}`,
-                    subject: 'Kirim Email',
-                    template: 'test',
-                    context: {
-                        name: `${user.name}`,
-                        email: `${user.email}`
-                    }
-                };
-                gmailTransport.sendMail(HelperOptions, (error, info) => {
-                    if (error) {
-                        console.log(error);
-                    }
-                    console.log("email is send");
-                    console.log(info);
-                });
-            })
+mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() =>{
+    console.log(`success connect ot mongodb ${URI}`);
+})
+.catch(()=>{
+    console.log(`fail connect to mongodb ${URI}`);
+})
+
+// At 09:00 on every 7th day-of-month
+
+cron.schedule('0 9 */7 * *', () => {
+let userEmail = []
+User.find({})
+    .then((users)=>{
+        users.forEach(user =>{
+            userEmail.push(user.email)
         })
+        return Question.find({}).sort({ upvotes: 'desc' }).limit(5)
+    })
+    .then(questions =>{
+        
+        let transaporter = nodemailer.createTransport({
+            host: 'smtp.ethereal.email',
+            port: 587,
+            auth: {
+                user: 'lourdes.jones@ethereal.email',
+                pass: 'YAz21YSjtbUAzU7Tj3'
+            }
+        })
+        
+        let mailOptions = {
+            form: 'bagaimana.bisnis@gmail.com',
+            to: [userEmail],
+            subject: 'Top Question For you',
+            text: `
+                HAAIII....!!!!! THIS IS TOP QUESTION OF THE WEEK
 
-}, null, true, 'Asia/Jakarta');
+                1. ${questions[0].title} link : http://overflow.uzai.site/${questions[0]._id}/qna
+                2. ${questions[1].title} link : http://overflow.uzai.site/${questions[1]._id}/qna
+                3. ${questions[2].title} link : http://overflow.uzai.site/${questions[2]._id}/qna
+                4. ${questions[3].title} link : http://overflow.uzai.site/${questions[3]._id}/qna
+                5. ${questions[4].title} link : http://overflow.uzai.site/${questions[4]._id}/qna
+            
+                ====== overflow ==== 
+                ENJOY YOUR DAY..!!
+            `
+        }
+        
+        transaporter.sendMail(mailOptions, function(err, data){
+            if(err){
+                console.log(err);
+            } else{
+                console.log(`Email Send...!!!`);
+            }
+        })
+    })
 
-module.exports = cornjob
+    }, {
+    scheduled: true,
+    timezone: "Asia/Jakarta"
+});
+
+
