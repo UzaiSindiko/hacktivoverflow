@@ -7,8 +7,8 @@
       </div>
       <button @click="changePage('/createquestion')" class="btn btn-primary">Ask Questions</button>
     </div>
-    <!-- <button class="d-flex justify-content-start align-items-center ml-2 btn btn-danger"> <i class="fas fa-eye-slash mr-3"></i>Unwatch Tag</button> -->
-    <button class="d-flex justify-content-start align-items-center ml-2 btn btn-success"> <i class="fas fa-eye"></i> Watch Tag</button>
+    <button v-if="isWatch"  @click="unwatch"  class="d-flex justify-content-start align-items-center ml-2 btn btn-danger"> <i class="fas fa-eye-slash mr-3"></i>Unwatch Tag</button>
+    <button v-if="!isWatch" @click="watch" class="d-flex justify-content-start align-items-center ml-2 btn btn-success"> <i class="fas fa-eye"></i> Watch Tag</button>
     <div class="mt-5">
       <Qcard v-for="question in questions" :key="question._id"  :question="question" />
     </div>
@@ -23,17 +23,41 @@ export default {
     components: {
         Qcard
     },
+    data(){
+      return{
+        isWatch: false,
+      }
+    },
     computed: {
-        ...mapState(['oneTag', 'questions'])
+        ...mapState(['oneTag', 'questions', 'userId'])
     },
     methods: {
     changePage(link){
       this.$router.push(link)
     },
+    watch(){
+      this.isWatch = true 
+      let id = this.$route.params.id
+      this.$store.dispatch('WATCH_TAG', id)
+    },
+    unwatch(){
+      this.isWatch = false 
+      let id = this.$route.params.id
+      this.$store.dispatch('UNWATCH_TAG', id)
+    }
   },
   created(){
       let id = this.$route.params.id
       this.$store.dispatch('GET_ONE_TAG', id)
+        .then(() =>{
+          this.oneTag.userId.forEach(el => {
+            if(el + '' == this.userId){
+              this.isWatch = true
+            } else {
+              this.isWatch = false
+            }
+          });
+        })
       this.$store.dispatch('GET_Q_BY_TAG', id)
   }
 }

@@ -61,6 +61,44 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    UNWATCH_TAG(context, id){
+      axios({
+        method: 'patch',
+        url: `/tags/${id}/unwatch`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({data}) =>{
+        context.dispatch('GET_ONE_TAG', id)
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+    },
+    WATCH_TAG(context, id){
+      axios({
+        method: 'patch',
+        url: `/tags/${id}/watch`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({data}) =>{
+        context.dispatch('GET_ONE_TAG', id)
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+    },
     GET_Q_BY_TAG(context, id){
       axios({
         method: 'get',

@@ -2,7 +2,6 @@ const router = require('express').Router()
 const QuestionController = require('../controllers/QuestionContoller')
 const { authentication, authorizationQuestion } = require('../middleware/auth')
 
-
 router.post('/', authentication, QuestionController.create)
 router.get('/', QuestionController.find)
 router.get('/top', QuestionController.findTop)

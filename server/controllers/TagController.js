@@ -36,6 +36,26 @@ class TagController {
         .catch(next)
     }
 
+    static watch(req, res, next){
+        let userId = req.decode.id
+        let id = req.params.id
+        Tag.findByIdAndUpdate(id, { $push: { userId } }, { new:true  })
+        .then(tag =>{
+            res.status(200).json(tag)
+        })
+        .catch(next)
+    }
+
+    static unwatch(req, res, next){
+        let userId = req.decode.id
+        let id = req.params.id
+        Tag.findByIdAndUpdate(id, { $pull: { userId } }, { new: true })
+        .then(tag =>{
+            res.status(200).json(tag)
+        })
+        .catch(next)
+    }
+
 }
 
 module.exports = TagController
