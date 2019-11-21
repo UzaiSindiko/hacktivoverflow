@@ -19,6 +19,23 @@ class TagController {
         .catch(next)
     }
 
+    static findAll(req, res, next){
+        Tag.find({}).sort({ createdAt: 1 })
+        .then(tags =>{
+            res.status(200).json(tags)
+        })
+        .catch(next)
+    }
+
+    static findById(req, res, next){
+        let id = req.params.id
+        Tag.findById(id)
+        .then(tag =>{
+            res.status(200).json(tag)
+        })
+        .catch(next)
+    }
+
 }
 
 module.exports = TagController

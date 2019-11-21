@@ -55,6 +55,15 @@ class QuestionController {
         .catch(next)
     }
 
+    static tag(req, res, next){
+        let id = req.params.id
+        Question.find({ tags: id }).populate('userId', 'email').populate('tags', 'tag').sort({ views: -1 })
+        .then(questions => {
+            res.status(200).json(questions)
+        })
+        .catch(next)
+    }
+
     static findByUser(req, res, next){
         const userId = req.decode.id
         Question.find({ userId }).populate('userId', 'email').populate('tags', 'tag').sort({ updatedAt: -1 })

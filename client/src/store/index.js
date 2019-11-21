@@ -13,10 +13,12 @@ export default new Vuex.Store({
     questions: [],
     myQuestions: [],
     tags: [],
+    oneTag: {},
     oneQuestion: {},
     answerByQ: [],
     userId : '',
-    oneAns: {}
+    oneAns: {},
+    
   },
   mutations: {
     login (state, data) {
@@ -53,9 +55,62 @@ export default new Vuex.Store({
     },
     get_q_by_user(state, data){
       state.myQuestions = data
+    },
+    get_one_tag(state, data){
+      state.oneTag = data
     }
   },
   actions: {
+    GET_Q_BY_TAG(context, id){
+      axios({
+        method: 'get',
+        url: `/questions/${id}/tag`
+      })
+      .then(({data}) =>{
+        context.commit('get_q', data)
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+    },
+    GET_TAG_ALL(context){
+      axios({
+        method: 'get',
+        url: '/tags/all'
+      })
+      .then(({data}) =>{
+        context.commit('get_tag', data)
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+    },
+    GET_ONE_TAG(context, id){
+      Swal.showLoading()
+      return axios({
+        method: 'get',
+        url: `/tags/${id}`
+      })
+      .then(({data}) =>{
+        Swal.close()
+        context.commit('get_one_tag', data)
+      })
+      .catch(({ response }) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: response.data.message
+        })
+      })
+    },
     DELETE_Q(context, id){
       Swal.fire({
         title: 'Are you sure?',

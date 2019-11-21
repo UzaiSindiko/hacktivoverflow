@@ -8,20 +8,24 @@
           <input type="search" placeholder="Search Tag...">
       </div>
     <div class="d-flex mt-3 flex-wrap"> 
-      <tag />
-      <tag />
-      <tag />
-      <tag />
+      <tag v-for="tag in tags" :key="tag._id" :tag="tag"/>
     </div>
   </div>
 </template>
 
 <script>
 import tag from '../components/Tag'
+import { mapState } from 'vuex'
 
 export default {
     components: {
         tag
+    },
+    computed: {
+        ...mapState(['tags'])
+    },
+    created(){
+        this.$store.dispatch('GET_TAG_ALL')
     }
 }
 </script>

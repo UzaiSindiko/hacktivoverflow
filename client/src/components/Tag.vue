@@ -1,11 +1,11 @@
 <template>
-        <div @click="changePage('sadfsadfasdf/tag')" class="tag-card text-left d-flex flex-column justify-content-between">
+        <div @click="changePage(`${tag._id}/tag`)" class="tag-card text-left d-flex flex-column justify-content-between">
             <div class="d-flex align-items-center">
-                <span class="title">Javascript</span>
-                <span class="ml-2 text-secondary">x 346456</span>
+                <span class="title">{{ tag.tag }}</span>
+                <span class="ml-2 text-secondary">x {{ tag.userId.length }}</span>
             </div>
             <div class="desc">
-                <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe harum officiis nulla sed eum ea, cupiditate dolorem nisi facere numquam voluptatem ipsum nobis sequi provident tenetur consequatur similique suscipit expedita obcaecati alias. In earum laboriosam corrupti minima accusantium distinctio quasi corporis, asperiores ducimus nisi laborum nemo esse nobis dicta debitis deserunt aliquam veritatis dolorum eos vel similique consequatur dolore tempore? Praesentium, placeat exercitationem. Debitis accusantium harum cumque, eveniet sed veniam repellat commodi, vero molestias esse quae ex quaerat? Placeat labore error ipsa, ad reprehenderit temporibus officiis quae explicabo libero hic possimus nulla recusandae asperiores in dicta ut aliquam debitis rerum?</span>
+                <span>{{ tag.desc }}</span>
             </div>
             <div>
                 <span>938 asked today, 5137 this week</span>
@@ -15,9 +15,9 @@
 
 <script>
 export default {
+    props: ['tag'],
     methods: {
         changePage(link){
-            // alert('masuk')
             this.$router.push(link)
         }
     }
