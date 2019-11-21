@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 const router = require('./routes')
 const errorHandler = require('./middleware/errorHandler')
 const PORT = process.env.PORT || 3000
-const URI = 'mongodb://localhost:27017/hacktiv-over-flow'
+const URI = process.env.URI
 
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
