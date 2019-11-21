@@ -1,5 +1,5 @@
 <template>
-  <div class="watch-tag d-flex flex-column justify-content-between pb-3">
+  <div v-if="isLogin" class="watch-tag d-flex flex-column justify-content-between pb-3">
         <div class="h-25 bg-light p-1 d-flex justify-content-between" style="font-size: 20px;"> 
             <div><i class="fas fa-eye"></i> Watch Tag</div>
             <button v-if="!edit" @click="editTag" class="btn btn-light border">Edit</button>
@@ -40,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['ingnoreTag', 'tags'])
+    ...mapState(['ingnoreTag', 'tags', 'isLogin'])
   },
   methods: {
     editTag(){
@@ -77,8 +77,10 @@ export default {
     }
   },
   created(){
-    this.$store.dispatch('GET_IGNORE')
-    this.$store.dispatch('GET_TAG')
+    if(localStorage.getItem('token')){
+      this.$store.dispatch('GET_IGNORE')
+      this.$store.dispatch('GET_TAG')
+    }
   }
 
 }

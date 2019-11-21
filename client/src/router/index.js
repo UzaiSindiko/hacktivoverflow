@@ -11,10 +11,6 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
-    beforeEnter(to, from, next){
-      if(localStorage.getItem('token')) next()
-      else next('/login')
-    }
   },
   {
     path: '/myaccount',
@@ -41,10 +37,6 @@ const routes = [
     path: '/overflow',
     name: 'overflow',
     component: Overflow,
-    beforeEnter(to, from, next){
-      if(localStorage.getItem('token')) next()
-      else next('/login')
-    }
   },
   {
     path: '/createquestion',
@@ -59,37 +51,21 @@ const routes = [
     path: '/tags',
     name: 'tags',
     component: () => import(/* webpackChunkName: "tags" */ '../views/Tags.vue'),
-    beforeEnter(to, from, next){
-      if(localStorage.getItem('token')) next()
-      else next('/login')
-    },
   },
   {
     path: '/:id/tag',
     name: 'tag',
     component: () => import(/* webpackChunkName: "tag" */ '../views/TagDetail.vue'),
-    beforeEnter(to, from, next){
-      if(localStorage.getItem('token')) next()
-      else next('/login')
-    },
   },
   {
     path: '/:id/qna',
     name: 'qna',
     component: () => import(/* webpackChunkName: "qnada" */ '../views/QandA.vue'),
-    beforeEnter(to, from, next){
-      if(localStorage.getItem('token')) next()
-      else next('/login')
-    }
   },
   {
     path: '/:id/editq',
     name: 'editq',
     component: () => import(/* webpackChunkName: "editq" */ '../views/EditQuestion.vue'),
-    beforeEnter(to, from, next){
-      if(localStorage.getItem('token')) next()
-      else next('/login')
-    }
   },
   {
     path: '/login',

@@ -7,6 +7,7 @@
       <button v-if="isLogin" class="btn btn-dark">My Account</button>
       <i v-if="isLogin" @click="logout" style="cursor: pointer;" class="text-secondary fas fa-sign-out-alt"></i>
     </div>
+      <button @click="changePage('/login')" v-if="!isLogin" class="btn btn-dark">Login</button>
   </nav>
 </template>
 
