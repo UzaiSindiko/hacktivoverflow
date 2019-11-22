@@ -15,8 +15,8 @@ mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
 })
 
 // At 09:00 on every 7th day-of-month
-
-cron.schedule('0 9 */7 * *', () => {
+// 0 9 */7 * *
+cron.schedule('* * * * *', () => {
 let userEmail = []
 User.find({})
     .then((users)=>{
@@ -28,17 +28,16 @@ User.find({})
     .then(questions =>{
         
         let transaporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
+            service: 'gmail',
             auth: {
-                user: 'lourdes.jones@ethereal.email',
-                pass: 'YAz21YSjtbUAzU7Tj3'
+                user: process.env.GMAIL_USER_NAME,
+                pass: process.env.GMAIL_USER_PASSWORD
             }
         })
         
         let mailOptions = {
             form: 'bagaimana.bisnis@gmail.com',
-            to: [userEmail],
+            to: 'uzai@sindiko.com',
             subject: 'Top Question For you',
             text: `
                 HAAIII....!!!!! THIS IS TOP QUESTION OF THE WEEK
