@@ -37,7 +37,7 @@ User.find({})
         
         let mailOptions = {
             form: 'bagaimana.bisnis@gmail.com',
-            to: 'uzai@sindiko.com',
+            to: userEmail,
             subject: 'Top Question For you',
             text: `
                 HAAIII....!!!!! THIS IS TOP QUESTION OF THE WEEK
