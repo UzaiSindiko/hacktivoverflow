@@ -16,7 +16,7 @@ mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // At 09:00 on every 7th day-of-month
 // 0 9 */7 * *
-cron.schedule('* * * * *', () => {
+cron.schedule('0 9 */7 * *', () => {
 let userEmail = []
 User.find({})
     .then((users)=>{
